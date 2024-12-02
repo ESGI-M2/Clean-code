@@ -14,11 +14,11 @@ src/
 │   └── valueObjects/       # Objets de valeurs et agrégats
 │
 ├── infrastructure/         # Couche Infrastructure (Base de données, frameworks)
-│   ├── databases/          # Gestion des bases de données (SQL, NoSQL, etc.)  
-│       ├── mongo/  
-│           ├── repositories/  
-│       ├── postgresql/  
-│           ├── repositories/  
+│   ├── databases/          # Gestion des bases de données (SQL, NoSQL, etc.)
+│       ├── mongo/
+│           ├── repositories/
+│       ├── postgresql/
+│           ├── repositories/
 │   └── frameworks/         # Frameworks externes (Express, NestJS, etc.)
 │   └── dto/                # Data Transfer Objects (pour les échanges entre couches)
 │
