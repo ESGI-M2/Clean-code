@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 
-import GetCustomerListQueryHandler from '@triumph/application/queries/get-customer-list-query-handler';
-import GetCustomerListQuery from '@triumph/application/queries/get-customer-list-query';
+import GetCustomerListQueryHandler from '@triumph/application/queries/customer/get/get-customer-list-query-handler';
+import GetCustomerListQuery from '@triumph/application/queries/customer/get/get-customer-list-query';
 import { Customer } from '@triumph/domain/entity/customer';
-import CustomerRepositoryReader from '@triumph/application/ports/repositories/customer-repository-reader';
+import CustomerRepositoryReader from '@triumph/application/ports/repositories/reader/customer-repository-reader';
 
 @Controller('customers')
 export default class CustomerController {

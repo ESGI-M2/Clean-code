@@ -1,5 +1,5 @@
 import { Occupation } from '@triumph/domain/entity/occupation';
-import OccupationRepositoryReader from '@triumph/application/ports/repositories/occupation-repository-reader';
+import OccupationRepositoryReader from '@triumph/application/ports/repositories/reader/occupation-repository-reader';
 
 /**
  * @deprecated

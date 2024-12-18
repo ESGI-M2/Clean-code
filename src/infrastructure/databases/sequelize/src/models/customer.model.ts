@@ -1,5 +1,6 @@
 import { Column, Table, Model, CreatedAt, UpdatedAt, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import Occupation from './occupation.model';
+import DrivingLicense from './driving-licence.model';
 
 @Table({
   tableName: 'customers',
@@ -20,6 +21,13 @@ export default class Customer extends Model {
 
   @BelongsTo(() => Occupation)
   declare occupation: Occupation;
+
+  @ForeignKey(() => DrivingLicense)
+  @Column
+  declare drivingLicenseId: number;
+
+  @BelongsTo(() => DrivingLicense)
+  declare drivingLicense: DrivingLicense;
 
   @Column
   declare lastName: string;

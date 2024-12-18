@@ -4,9 +4,9 @@ import { BikeModel } from './bike-model';
 export class Bike {
   constructor(
     public id: number,
-    public customer: Customer,
+    public customer: Customer | null,
     public kilometers: number,
-    public bikeModel: BikeModel,
+    public bikeModel: BikeModel | null,
     public status: number,
     public circulationDate: Date,
   ) {}

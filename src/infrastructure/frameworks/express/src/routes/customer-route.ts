@@ -1,6 +1,6 @@
 import express, { Request, Response, Express, Router } from 'express';
 import RouteInterface from './route-interface';
-import CustomerController from '../controllers/customer-controller';
+import CustomerController from '../controllers/customer/customer-controller';
 import container from '../ioc/container.registry';
 
 export default class CustomerRoute implements RouteInterface {
@@ -14,7 +14,15 @@ export default class CustomerRoute implements RouteInterface {
 
   getRouter() {
     this.router.get('/', (req: Request, res: Response) => {
-      this.customerController.all(req, res);
+      this.customerController.list(req, res);
+    });
+
+    this.router.get('/:id', (req: Request, res: Response) => {
+      this.customerController.getById(req, res);
+    });
+    
+    this.router.get('/search/:keyword', (req: Request, res: Response) => {
+      this.customerController.search(req, res);
     });
 
     return this.router;

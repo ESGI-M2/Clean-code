@@ -11,7 +11,6 @@ export default class ExpressApplication {
   }
 
   configureExpressApplication(): Express {
-    // Setting up routes
     this.routes.configureRoutes(this.app);
 
     return this.app;

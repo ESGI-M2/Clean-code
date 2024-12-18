@@ -1,4 +1,4 @@
-import CustomerRepositoryReader from '@triumph/application/ports/repositories/customer-repository-reader';
+import CustomerRepositoryReader from '@triumph/application/ports/repositories/reader/customer-repository-reader';
 import { Customer } from '@triumph/domain/entity/customer';
 import { DrivingLicense } from '@triumph/domain/entity/driving-license';
 import { Occupation } from '@triumph/domain/entity/occupation';
@@ -40,5 +40,19 @@ export default class InMemoryCustomerRepository implements CustomerRepositoryRea
 
   list(): Customer[] {
     return this.customers;
+  }
+
+  getById(id: number): Customer | null {
+    const customer = this.customers.find(cust => cust.id === id);
+    return customer || null;
+  }
+
+  search(keyword: string): Customer[] {
+    const lowercasedKeyword = keyword.toLowerCase();
+    return this.customers.filter(customer => 
+      customer.firstName.toLowerCase().includes(lowercasedKeyword) ||
+      customer.lastName.toLowerCase().includes(lowercasedKeyword) ||
+      customer.email.toLowerCase().includes(lowercasedKeyword)
+    );
   }
 }

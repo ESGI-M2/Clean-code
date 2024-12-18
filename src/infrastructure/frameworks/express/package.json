@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "awilix": "^12.0.4",
+    "cors": "^2.8.5",
     "express": "^4.21.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0"
   }
 }
