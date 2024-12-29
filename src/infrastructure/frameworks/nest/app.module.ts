@@ -8,7 +8,6 @@ import DatabaseAdapter from '@triumph/shared-infrastructure/database-adapter/dat
   imports: [
     CustomerModule,
     OccupationModule,
-    // Add your modules here
   ],
   controllers: [],
   providers: [

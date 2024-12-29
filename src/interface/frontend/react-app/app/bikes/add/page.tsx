@@ -2,15 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { getCustomers, getBikeModels, createMoto } from '../../../api';
+import { useRouter } from 'next/navigation';
 
 const AddBikePage = () => {
   const [customers, setCustomers] = useState<any[]>([]);
   const [bikeModels, setBikeModels] = useState<any[]>([]);
   const [kilometers, setKilometers] = useState<number>(0);
-  const [status, setStatus] = useState<number>(1); // Actif
+  const [status, setStatus] = useState<number>(1);
   const [circulationDate, setCirculationDate] = useState<string>('');
   const [selectedCustomer, setSelectedCustomer] = useState<number>(0);
   const [selectedBikeModel, setSelectedBikeModel] = useState<number>(0);
+    const router = useRouter();
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -35,7 +37,6 @@ const AddBikePage = () => {
     fetchBikeModels();
   }, []);
 
-  // Gérer l'envoi du formulaire pour créer une moto
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,8 +55,7 @@ const AddBikePage = () => {
 
     try {
       await createMoto(newMoto);
-      alert('Moto ajoutée avec succès');
-      // Rediriger ou effectuer d'autres actions après la soumission
+      router.push('/bikes');
     } catch (error) {
       console.error('Erreur lors de la création de la moto', error);
       alert('Erreur lors de l\'ajout de la moto');
@@ -79,7 +79,10 @@ const AddBikePage = () => {
             <option value={0}>Sélectionner un client</option>
             {customers.map((customer) => (
               <option key={customer.id} value={customer.id}>
-                {customer.name}
+                #{customer.id} &nbsp;
+                {customer.firstName} &nbsp;
+                {customer.lastName}
+                ({customer.email})
               </option>
             ))}
           </select>

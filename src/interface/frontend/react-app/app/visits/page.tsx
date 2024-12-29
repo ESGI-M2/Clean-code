@@ -27,14 +27,13 @@ const VisitesPage = () => {
   }, []);
 
   const goToAddVisitePage = () => {
-    router.push('/visites/add');
+    router.push('/visits/add');
   };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-4 text-blue-600">Gestion des Visites</h1>
 
-      {/* Bouton pour ajouter une visite */}
       <div className="flex justify-center mb-6">
         <button
           onClick={goToAddVisitePage}

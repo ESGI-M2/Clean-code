@@ -7,14 +7,11 @@ class NestServer {
   private readonly serverPort = parseInt(process.env.PORT || '3000');
 
   async bootstrap() {
-    // Getting the application context
     const applicationContext = await NestFactory.createApplicationContext(AppModule);
 
-    // Connecting to the database
     const databaseAdapter = applicationContext.get(DatabaseAdapter);
     await databaseAdapter.connect();
 
-    // Creating the application instance and running it
     const application = await NestFactory.create(AppModule);
     await application.listen(this.serverPort, () => {
       console.log(`\x1b[34m%s\x1b[0m`, `${this.serverName} server is running on port ${this.serverPort}`);

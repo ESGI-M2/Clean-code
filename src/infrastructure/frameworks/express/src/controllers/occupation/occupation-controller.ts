@@ -19,7 +19,6 @@ export default class OccupationController {
   async getById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
-    // Validation de l'ID
     const numericId = parseInt(id, 10);
     if (isNaN(numericId)) {
       return res.status(400).json({ message: 'ID invalide' });
@@ -28,7 +27,7 @@ export default class OccupationController {
     const getOccupationUsecase = new GetOccupationQueryHandler(this.OccupationRepositoryReader);
     const occupation = await getOccupationUsecase.execute(new GetOccupationQuery(numericId));
 
-    return res.status(200).json(occupation); // Retourne l'occupation par ID
+    return res.status(200).json(occupation);
   }
 
   async search(req: Request, res: Response): Promise<Response> {
@@ -36,6 +35,6 @@ export default class OccupationController {
     const searchOccupationUsecase = new SearchoccupationQueryHandler(this.OccupationRepositoryReader);
     const occupations = await searchOccupationUsecase.execute(new SearchOccupationQuery(keyword));
 
-    return res.status(200).json(occupations); // Retourne la liste des occupations correspondant au mot-clé
+    return res.status(200).json(occupations);
   }
 }

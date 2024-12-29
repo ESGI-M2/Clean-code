@@ -1,21 +1,26 @@
 import { Request, Response } from 'express';
-import GetTrialListQueryHandler from '@triumph/application/queries/trial/get/get-trial-list-query-handler';
-import GetTrialListQuery from '@triumph/application/queries/trial/get/get-trial-list-query';
-import GetTrialQueryHandler from '@triumph/application/queries/trial/get/get-trial-query-handler';
-import SearchTrialQueryHandler from '@triumph/application/queries/trial/filter/search-trial-query-handler';
-import GetTrialQuery from '@triumph/application/queries/trial/get/get-trial-query';
-import SearchTrialQuery from '@triumph/application/queries/trial/filter/search-trial-query';
-import TrialRepositoryReader from '@triumph/application/ports/repositories/reader/trial-repository-reader';
+import GetVisitListQueryHandler from '@triumph/application/queries/visit/get/get-visit-list-query-handler';
+import GetVisitListQuery from '@triumph/application/queries/visit/get/get-visit-list-query';
+import GetVisitQueryHandler from '@triumph/application/queries/visit/get/get-visit-query-handler';
+import SearchVisitQueryHandler from '@triumph/application/queries/visit/filter/search-visit-query-handler';
+import GetVisitQuery from '@triumph/application/queries/visit/get/get-visit-query';
+import SearchVisitQuery from '@triumph/application/queries/visit/filter/search-visit-query';
+import VisitRepositoryReader from '@triumph/application/ports/repositories/reader/visit-repository-reader';
 
-export default class TrialController {
+export default class VisitController {
   constructor(
-    private readonly TrialRepositoryReader: TrialRepositoryReader
+    private readonly VisitRepositoryReader: VisitRepositoryReader
   ) {}
 
   async list(req: Request, res: Response): Promise<Response> {
-    const listTrialUsecase = new GetTrialListQueryHandler(this.TrialRepositoryReader);
-    const trials = await listTrialUsecase.execute(new GetTrialListQuery());
-    return res.status(200).json(trials);
+    try {
+      const listVisitUsecase = new GetVisitListQueryHandler(this.VisitRepositoryReader);
+      const visits = await listVisitUsecase.execute(new GetVisitListQuery());
+      return res.status(200).json(visits);
+    } catch (error) {
+      console.error('Error listing visits:', error);
+      return res.status(500).json({ message: 'Error listing visits' });
+    }
   }
 
   async getById(req: Request, res: Response): Promise<Response> {
@@ -23,25 +28,34 @@ export default class TrialController {
     const numericId = parseInt(id, 10);
 
     if (isNaN(numericId)) {
-      return res.status(400).json({ message: 'ID invalide' });
+      return res.status(400).json({ message: 'Invalid ID' });
     }
 
-    const getTrialUsecase = new GetTrialQueryHandler(this.TrialRepositoryReader);
-    const trial = await getTrialUsecase.execute(new GetTrialQuery(numericId));
+    try {
+      const getVisitUsecase = new GetVisitQueryHandler(this.VisitRepositoryReader);
+      const visit = await getVisitUsecase.execute(new GetVisitQuery(numericId));
 
-    if (!trial) {
-      return res.status(404).json({ message: 'Trial not found' });
+      if (!visit) {
+        return res.status(404).json({ message: 'Visit not found' });
+      }
+
+      return res.status(200).json(visit);
+    } catch (error) {
+      console.error('Error retrieving visit:', error);
+      return res.status(500).json({ message: 'Error retrieving visit' });
     }
-
-    return res.status(200).json(trial);
   }
 
   async search(req: Request, res: Response): Promise<Response> {
     const { keyword } = req.params;
 
-    const searchTrialUsecase = new SearchTrialQueryHandler(this.TrialRepositoryReader);
-    const trials = await searchTrialUsecase.execute(new SearchTrialQuery(keyword));
-
-    return res.status(200).json(trials);
+    try {
+      const searchVisitUsecase = new SearchVisitQueryHandler(this.VisitRepositoryReader);
+      const visits = await searchVisitUsecase.execute(new SearchVisitQuery(keyword));
+      return res.status(200).json(visits);
+    } catch (error) {
+      console.error('Error searching visits:', error);
+      return res.status(500).json({ message: 'Error searching visits' });
+    }
   }
 }

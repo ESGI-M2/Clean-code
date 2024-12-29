@@ -20,6 +20,14 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+Start the project on react:
+go to the directory src/interface/frontend/react-app
+
+```bash
+npm run dev
+Open [http://localhost:3030](http://localhost:3030) with your browser to see the result.
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -1,11 +1,13 @@
 import axios from 'axios';
 
 const API_OCCUPATIONS_URL = 'http://localhost:3000/occupations';
-const API_MOTOS_URL = 'http://localhost:3000/bikes';
+const API_BIKES_URL = 'http://localhost:3000/bikes';
 const API_BIKEMODELS_URL = 'http://localhost:3000/bikemodels';
 const API_CUSTOMERS_URL = 'http://localhost:3000/customers';
+const API_CUSTOMER_EVENTS_URL = 'http://localhost:3000/customerevents';
 const API_ESSAIS_URL = 'http://localhost:3000/trials';
 const API_VISITS_URL = 'http://localhost:3000/visits';
+const API_EVENTS_URL = 'http://localhost:3000/events';
 
 export const getOccupations = async () => {
   try {
@@ -29,8 +31,7 @@ export const createOccupation = async (name: string) => {
 
 export const getMotos = async () => {
   try {
-    const response = await axios.get(API_MOTOS_URL);
-    console.log(response.data)
+    const response = await axios.get(API_BIKES_URL);
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la récupération des motos', error);
@@ -40,7 +41,7 @@ export const getMotos = async () => {
 
 export const createMoto = async (newMoto: any) => {
   try {
-    const response = await axios.post(API_MOTOS_URL, newMoto);
+    const response = await axios.post(API_BIKES_URL, newMoto);
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la création de la moto', error);
@@ -59,7 +60,6 @@ export const getBikeModels = async () => {
   }
 };
 
-// Fonction pour créer un modèle de moto
 export const createBikeModel = async (name: string) => {
   try {
     const response = await axios.post(API_BIKEMODELS_URL, { name });
@@ -70,7 +70,6 @@ export const createBikeModel = async (name: string) => {
   }
 };
 
-// Récupérer les clients
 export const getCustomers = async () => {
   try {
     const response = await axios.get(API_CUSTOMERS_URL);
@@ -81,10 +80,54 @@ export const getCustomers = async () => {
   }
 };
 
-// Créer un client
+export const getCustomerEvents = async (customerId: string) => {
+  const response = await axios.get(`${API_CUSTOMER_EVENTS_URL}/events/${customerId}`);
+  return response.data;
+};
+
+export const createCustomerEvent = async (
+  customerId: string,
+  eventId: number,
+  eventDate: string,
+  description: string
+) => {
+  try {
+    const response = await axios.post(`${API_CUSTOMER_EVENTS_URL}`, {
+      customerId,
+      eventId,
+      eventDate,
+      description
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'événement', error);
+    throw error;
+  }
+};
+
 export const createCustomer = async (name: string) => {
   try {
     const response = await axios.post(API_CUSTOMERS_URL, { name });
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la création du customer', error);
+    throw error;
+  }
+};
+
+export const getEvents = async () => {
+  try {
+    const response = await axios.get(API_EVENTS_URL);
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des customers', error);
+    throw error;
+  }
+};
+
+export const createEvent = async (name: string) => {
+  try {
+    const response = await axios.post(API_EVENTS_URL, { name });
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la création du customer', error);

@@ -1,11 +1,11 @@
-import { Trial } from '@triumph/domain/entity/trial';
-import TrialRepositoryReader from '../../../ports/repositories/reader/trial-repository-reader';
-import GetTrialQuery from './get-visit-query';
+import { Visit } from '@triumph/domain/entity/visit';
+import VisitRepositoryReader from '../../../ports/repositories/reader/visit-repository-reader';
+import GetVisitQuery from './get-visit-query';
 
 export default class GetTrialQueryHandler {
-  constructor(private readonly trialRepositoryReader: TrialRepositoryReader) {}
+  constructor(private readonly visitRepositoryReader: VisitRepositoryReader) {}
 
-  async execute(query: GetTrialQuery): Promise<Trial | null> {
-    return this.trialRepositoryReader.getById(query.id);
+  async execute(query: GetVisitQuery): Promise<Visit | null> {
+    return this.visitRepositoryReader.getById(query.id);
   }
 }

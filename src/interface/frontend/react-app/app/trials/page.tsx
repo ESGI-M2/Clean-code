@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getEssais } from '../../api';  // Assurez-vous d'avoir une fonction qui charge les essais depuis votre API
+import { getEssais } from '../../api';
 import { useRouter } from 'next/navigation';
 
 const formatDate = (dateString: string) => {
@@ -10,7 +10,7 @@ const formatDate = (dateString: string) => {
 };
 
 const EssaisPage = () => {
-  const [essais, setEssais] = useState<any[]>([]);  // Stocker les données des essais
+  const [essais, setEssais] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -27,14 +27,13 @@ const EssaisPage = () => {
   }, []);
 
   const goToAddEssaiPage = () => {
-    router.push('/essais/add');
+    router.push('/trials/add');
   };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-4 text-blue-600">Gestion des Essais</h1>
 
-      {/* Bouton pour ajouter un essai */}
       <div className="flex justify-center mb-6">
         <button
           onClick={goToAddEssaiPage}
@@ -44,7 +43,6 @@ const EssaisPage = () => {
         </button>
       </div>
 
-      {/* Liste des essais */}
       <div className="overflow-x-auto mb-8">
         <h2 className="text-2xl font-semibold mb-4">Liste des Essais</h2>
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
@@ -52,9 +50,9 @@ const EssaisPage = () => {
             <tr className="bg-gray-100">
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Nom du Client</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Modèle de Moto</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Prix</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Date de l'Essai</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Récapitulatif</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Kilométrage</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Début</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Fin</th>
             </tr>
           </thead>
           <tbody>
@@ -68,13 +66,13 @@ const EssaisPage = () => {
                     {essai.bike?.bikeModel?.name ?? 'Modèle non disponible'}
                   </td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">
-                    {essai.price} €
+                    {essai.kilometers} km
                   </td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">
-                    {formatDate(essai.visitDate)}
+                    {formatDate(essai.startDate)}
                   </td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">
-                    {essai.recapitulation}
+                    {formatDate(essai.endDate)}
                   </td>
                 </tr>
               ))

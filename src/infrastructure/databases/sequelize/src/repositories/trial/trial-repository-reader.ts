@@ -1,6 +1,8 @@
 import { Trial } from '@triumph/domain/entity/trial';
 import TrialModel from '../../models/trial.model';
 import CustomerModel from '../../models/customer.model';
+import DrivingLicenseModel from '../../models/driving-licence.model';
+import BikeModelModel from '../../models/bike-model.model';
 import { Op } from 'sequelize';
 import TrialRepositoryReader from '@triumph/application/ports/repositories/reader/trial-repository-reader';
 import BikeModel from '../../models/bike.model';
@@ -16,13 +18,23 @@ export default class SequelizeTrialRepositoryReader implements TrialRepositoryRe
             as: 'bike',
             include: [
               {
+                model: BikeModelModel,
+                as: 'bikeModel' 
+              },
+              {
                 model: CustomerModel,
                 as: 'customer',
+                include: [
+                  {
+                    model: DrivingLicenseModel,
+                    as: 'drivingLicense',
+                  },
+                ],
               },
             ],
           },
         ],
-      });
+      });      
   
       return trials
         .map(trial => {
@@ -46,7 +58,6 @@ export default class SequelizeTrialRepositoryReader implements TrialRepositoryRe
       throw new Error('Error retrieving trials: ' + error);
     }
   }
-  
 
   async getById(trialId: number): Promise<Trial | null> {
     const trial = await TrialModel.findByPk(trialId, {

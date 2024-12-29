@@ -34,7 +34,35 @@ export default class SequelizeCustomerEventRepositoryReader implements CustomerE
     );
   }
 
-  // Récupérer un événement par ID
+  async getByCustomerId(customerId: number): Promise<CustomerEvent[]> {
+    const customerEvents = await CustomerEventModel.findAll({
+      where: {
+        customerId,
+      },
+      include: [
+        {
+          model: CustomerModel,
+          as: 'customer',
+        },
+        {
+          model: EventModel,
+          as: 'event',
+        },
+      ],
+    });
+  
+    return customerEvents.map((customerEvent) => {
+      return new CustomerEvent(
+        customerEvent.id,
+        customerEvent.eventDate,
+        customerEvent.description,
+        toDomainCustomer(customerEvent.customer),
+        this.mapEvent(customerEvent.event)
+      );
+    });
+  }
+  
+
   async getById(customerEventId: number): Promise<CustomerEvent | null> {
     const customerEvent = await CustomerEventModel.findByPk(customerEventId, {
       include: [

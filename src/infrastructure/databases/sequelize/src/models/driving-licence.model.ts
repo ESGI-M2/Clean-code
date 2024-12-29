@@ -14,11 +14,11 @@ export default class DrivingLicenseModel extends Model {
   declare id: number;
 
   @Column
-  declare emissionDate: Date;  // Vous avez utilisé 'emissionDate' au lieu de 'date'
+  declare emissionDate: Date;
 
   @Column
-  declare status: number; // Vous utilisez un nombre pour le statut
+  declare status: number;
 
   @Column
-  declare country: string; // Code pays à deux caractères
+  declare country: string;
 }

@@ -1,15 +1,67 @@
-import { Trial } from '@triumph/domain/entity/trial';
-import TrialModel from '../../models/trial.model';
-import CustomerModel from '../../models/customer.model';
-import { Op } from 'sequelize';
-import TrialRepositoryReader from '@triumph/application/ports/repositories/reader/trial-repository-reader';
+import { Visit } from '@triumph/domain/entity/visit';
+import VisitModel from '../../models/visit.model';
 import BikeModel from '../../models/bike.model';
-import { toDomainTrial } from '../../../../../adapters/trial-adapter';
+import CustomerModel from '../../models/customer.model';
+import BikeModelModel from '../../models/bike-model.model';
+import DrivingLicenseModel from '../../models/driving-licence.model';
+import { Op } from 'sequelize';
+import VisitRepositoryReader from '@triumph/application/ports/repositories/reader/visit-repository-reader';
+import { toDomainVisit } from '../../../../../adapters/visit-adapter';
 
-export default class SequelizeTrialRepositoryReader implements TrialRepositoryReader {
-  async list(): Promise<Trial[]> {
+export default class SequelizeVisitRepositoryReader implements VisitRepositoryReader {
+  async list(): Promise<Visit[]> {
     try {
-      const trials = await TrialModel.findAll({
+      const visits = await VisitModel.findAll({
+        include: [
+          {
+            model: BikeModel,
+            as: 'bike',
+            include: [
+              {
+                model: BikeModelModel,
+                as: 'bikeModel' 
+              },
+              {
+                model: CustomerModel,
+                as: 'customer',
+                include: [
+                  {
+                    model: DrivingLicenseModel,
+                    as: 'drivingLicense',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      return visits
+        .map(visit => {
+          const bike = visit.bike;
+          if (!bike) {
+            console.warn(`Visit with id ${visit.id} has no associated bike`);
+            return null;
+          }
+
+          const customer = bike.customer;
+          if (!customer) {
+            console.warn(`Bike with id ${bike.id} has no associated customer`);
+            return null;
+          }
+
+          return toDomainVisit(visit);
+        })
+        .filter((visit): visit is Visit => visit !== null);
+    } catch (error) {
+      console.error('Error retrieving visits:', error);
+      throw new Error('Error retrieving visits: ' + error);
+    }
+  }
+
+  async getById(visitId: number): Promise<Visit | null> {
+    try {
+      const visit = await VisitModel.findByPk(visitId, {
         include: [
           {
             model: BikeModel,
@@ -18,52 +70,56 @@ export default class SequelizeTrialRepositoryReader implements TrialRepositoryRe
               {
                 model: CustomerModel,
                 as: 'customer',
+                include: [
+                  {
+                    model: DrivingLicenseModel,
+                    as: 'drivingLicense',
+                  },
+                ],
               },
             ],
           },
         ],
       });
-  
-      return trials
-        .map(trial => {
-          const bike = trial.bike;
-          if (!bike) {
-            console.warn(`Trial with id ${trial.id} has no associated bike`);
-            return null;
-          }
-  
-          const customer = bike.customer;
-          if (!customer) {
-            console.warn(`Bike with id ${bike.id} has no associated customer`);
-            return null;
-          }
-  
-          return toDomainTrial(trial);
-        })
-        .filter((trial): trial is Trial => trial !== null);
+
+      if (!visit) return null;
+      return toDomainVisit(visit);
     } catch (error) {
-      console.error('Error retrieving trials:', error);
-      throw new Error('Error retrieving trials: ' + error);
+      console.error('Error retrieving visit by ID:', error);
+      throw new Error('Error retrieving visit by ID: ' + error);
     }
   }
 
-  async getById(trialId: number): Promise<Trial | null> {
-    const trial = await TrialModel.findByPk(trialId, {
-      include: ['bike'],
-    });
-    if (!trial) return null;
+  async search(keyword: string): Promise<Visit[]> {
+    try {
+      const visits = await VisitModel.findAll({
+        where: {
+          visitDate: { [Op.iLike]: `%${keyword}%` },
+        },
+        include: [
+          {
+            model: BikeModel,
+            as: 'bike',
+            include: [
+              {
+                model: CustomerModel,
+                as: 'customer',
+                include: [
+                  {
+                    model: DrivingLicenseModel,
+                    as: 'drivingLicense',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
 
-    return toDomainTrial(trial);
-  }
-
-  async search(keyword: string): Promise<Trial[]> {
-    const trials = await TrialModel.findAll({
-      where: {
-        startDate: { [Op.iLike]: `%${keyword}%` },
-      },
-      include: ['bike'],
-    });
-
-    return trials.map(trial => toDomainTrial(trial));
+      return visits.map(visit => toDomainVisit(visit));
+    } catch (error) {
+      console.error('Error searching visits:', error);
+      throw new Error('Error searching visits: ' + error);
+    }
   }
 }

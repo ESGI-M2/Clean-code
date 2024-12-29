@@ -10,14 +10,12 @@ export default class DeleteOccupationCommandHandler {
   ) {}
 
   async execute(command: DeleteOccupationCommand): Promise<void> {
-    // Recherche de l'occupation par ID
     const existingOccupation = await this.occupationRepositoryReader.getById(command.id);
 
     if (!existingOccupation) {
       throw new Error(`Occupation with ID ${command.id} not found`);
     }
 
-    // Suppression de l'occupation via le repository
     await this.occupationRepositoryWriter.delete(command.id);
   }
 }

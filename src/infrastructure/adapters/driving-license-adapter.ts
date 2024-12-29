@@ -14,10 +14,7 @@ function mapStatus(status: number): 'VALID' | 'EXPIRED' | 'SUSPENDED' {
   }
 }
 
-export function toDomainDrivingLicense(drivingLicenseModel?: DrivingLicenseModel): DrivingLicense | null {
-  if (!drivingLicenseModel) {
-    return null;
-  }
+export function toDomainDrivingLicense(drivingLicenseModel: DrivingLicenseModel): DrivingLicense {
 
   return new DrivingLicense(
     drivingLicenseModel.id,

@@ -9,17 +9,15 @@ import CustomerEventRepositoryReader from '@triumph/application/ports/repositori
 
 export default class CustomerEventController {
   constructor(
-    private readonly CustomerEventRepositoryReader: CustomerEventRepositoryReader
+    private readonly CustomerEventRepositoryReader: CustomerEventRepositoryReader,
   ) {}
 
-  // Récupérer la liste des événements
   async list(req: Request, res: Response): Promise<Response> {
     const listCustomerEventUsecase = new GetCustomerEventListQueryHandler(this.CustomerEventRepositoryReader);
     const customerEvents = await listCustomerEventUsecase.execute(new GetCustomerEventListQuery());
     return res.status(200).json(customerEvents);
   }
 
-  // Récupérer un événement par ID
   async getById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const numericId = parseInt(id, 10);
@@ -37,7 +35,22 @@ export default class CustomerEventController {
     return res.status(200).json(customerEvent);
   }
 
-  // Rechercher des événements par mot-clé
+  async getByCustomerId(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) {
+      return res.status(400).json({ message: 'ID invalide' });
+    }
+
+    const customerEvents = await this.CustomerEventRepositoryReader.getByCustomerId(numericId);
+    
+    if (!customerEvents || customerEvents.length === 0) {
+      return res.status(404).json({ message: 'No events found for this customer' });
+    }
+
+    return res.status(200).json(customerEvents);
+  }
+
   async search(req: Request, res: Response): Promise<Response> {
     const { keyword } = req.params;
 

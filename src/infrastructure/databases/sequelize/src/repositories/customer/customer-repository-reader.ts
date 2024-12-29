@@ -19,9 +19,7 @@ export default class SequelizeCustomerRepositoryReader implements CustomerReposi
     return customers.map(customer =>
       new Customer(
         customer.id,
-        customer.drivingLicense
-          ? toDomainDrivingLicense(customer.drivingLicense) 
-          : null,
+        toDomainDrivingLicense(customer.drivingLicense),
         customer.occupation,
         customer.lastName,
         customer.firstName,
@@ -33,15 +31,13 @@ export default class SequelizeCustomerRepositoryReader implements CustomerReposi
 
   async getById(customerId: number): Promise<Customer | null> {
     const customer = await CustomerModel.findByPk(customerId, {
-      include: ['drivingLicense'], // Inclure drivingLicense
+      include: ['drivingLicense'],
     });
     if (!customer) return null;
 
     return new Customer(
       customer.id,
-      customer.drivingLicense 
-        ? toDomainDrivingLicense(customer.drivingLicense) 
-        : null,
+      toDomainDrivingLicense(customer.drivingLicense),
       customer.occupation,
       customer.lastName,
       customer.firstName,
@@ -50,7 +46,6 @@ export default class SequelizeCustomerRepositoryReader implements CustomerReposi
     );
   }
 
-  // Recherche un client par un mot-clé
   async search(keyword: string): Promise<Customer[]> {
     const customers = await CustomerModel.findAll({
       where: {
@@ -60,15 +55,13 @@ export default class SequelizeCustomerRepositoryReader implements CustomerReposi
           { email: { [Op.iLike]: `%${keyword}%` } },
         ],
       },
-      include: ['drivingLicense'], // Inclure drivingLicense pour éviter undefined
+      include: ['drivingLicense'],
     });
 
     return customers.map(customer =>
       new Customer(
         customer.id,
-        customer.drivingLicense 
-          ? toDomainDrivingLicense(customer.drivingLicense) 
-          : null,
+        toDomainDrivingLicense(customer.drivingLicense),
         customer.occupation,
         customer.lastName,
         customer.firstName,
