@@ -5,7 +5,7 @@ const API_BIKES_URL = 'http://localhost:3000/bikes';
 const API_BIKEMODELS_URL = 'http://localhost:3000/bikemodels';
 const API_CUSTOMERS_URL = 'http://localhost:3000/customers';
 const API_CUSTOMER_EVENTS_URL = 'http://localhost:3000/customerevents';
-const API_ESSAIS_URL = 'http://localhost:3000/trials';
+const API_TRIAL_URL = 'http://localhost:3000/trials';
 const API_VISITS_URL = 'http://localhost:3000/visits';
 const API_DRIVING_URL = 'http://localhost:3000/drivinglicenses';
 const API_EVENTS_URL = 'http://localhost:3000/events';
@@ -136,12 +136,27 @@ export const createEvent = async (name: string) => {
   }
 };
 
-export const getEssais = async () => {
+export const getTrial = async () => {
   try {
-    const response = await axios.get(API_ESSAIS_URL);
+    const response = await axios.get(API_TRIAL_URL);
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la récupération des essais', error);
+    throw error;
+  }
+};
+
+export const createTrial = async (trialData: {
+  bikeId: number;
+  startDate: string;
+  endDate: string;
+  kilometers: number;
+}) => {
+  try {
+    const response = await axios.post(API_TRIAL_URL, trialData);
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'essai', error);
     throw error;
   }
 };

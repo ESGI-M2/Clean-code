@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getEssais } from '../../api';
+import { getTrial } from '../../api';
 import { useRouter } from 'next/navigation';
+import { format } from 'date-fns'; // Importer la fonction format de date-fns
 
-const formatDate = (dateString: string) => {
+// Fonction pour formater la date et l'heure
+const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR');
+  return format(date, 'dd/MM/yyyy HH:mm'); // Format : jour/mois/année heure:minute
 };
 
 const EssaisPage = () => {
@@ -16,7 +18,7 @@ const EssaisPage = () => {
   useEffect(() => {
     const fetchEssais = async () => {
       try {
-        const data = await getEssais();
+        const data = await getTrial();
         setEssais(data);
       } catch (error) {
         console.error('Erreur lors du chargement des essais', error);
@@ -69,10 +71,10 @@ const EssaisPage = () => {
                     {essai.kilometers} km
                   </td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">
-                    {formatDate(essai.startDate)}
+                    {formatDateTime(essai.startDate)} {/* Affichage formaté de la date et de l'heure */}
                   </td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">
-                    {formatDate(essai.endDate)}
+                    {formatDateTime(essai.endDate)} {/* Affichage formaté de la date et de l'heure */}
                   </td>
                 </tr>
               ))
