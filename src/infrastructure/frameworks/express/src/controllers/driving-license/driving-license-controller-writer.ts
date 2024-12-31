@@ -9,17 +9,16 @@ export default class DrivingLicenseControllerWriter {
   ) {}
 
   async create(req: Request, res: Response): Promise<Response> {
-    const { status, country, date } = req.body;
-
+    const { date, status, country } = req.body;
     const createDrivingLicenseCommandHandler = new CreateDrivingLicenseCommandHandler(
       this.DrivingLicenseRepositoryWriter
     );
 
     try {
       const drivingLicense = await createDrivingLicenseCommandHandler.execute(new CreateDrivingLicenseCommand(
+        date,
         status,
-        country,
-        date
+        country
       ));
 
       return res.status(201).json(drivingLicense);

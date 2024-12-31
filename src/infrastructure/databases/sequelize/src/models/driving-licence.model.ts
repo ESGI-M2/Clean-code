@@ -19,6 +19,10 @@ export default class DrivingLicenseModel extends Model {
   @Column
   declare status: number;
 
-  @Column
+  @Column({
+    validate: {
+      len: [2, 2],
+    },
+  })
   declare country: string;
 }

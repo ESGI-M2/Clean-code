@@ -7,6 +7,7 @@ const API_CUSTOMERS_URL = 'http://localhost:3000/customers';
 const API_CUSTOMER_EVENTS_URL = 'http://localhost:3000/customerevents';
 const API_ESSAIS_URL = 'http://localhost:3000/trials';
 const API_VISITS_URL = 'http://localhost:3000/visits';
+const API_DRIVING_URL = 'http://localhost:3000/drivinglicenses';
 const API_EVENTS_URL = 'http://localhost:3000/events';
 
 export const getOccupations = async () => {
@@ -151,6 +152,26 @@ export const getVisites = async () => {
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la récupération des visites', error);
+    throw error;
+  }
+};
+
+export const createDrivingLicense = async (
+  customerId: string,
+  date: string,
+  status: string,
+  country: string
+) => {
+  try {
+    const response = await axios.post(API_DRIVING_URL, {
+      customerId,
+      date,
+      status,
+      country,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la création du permis de conduire', error);
     throw error;
   }
 };

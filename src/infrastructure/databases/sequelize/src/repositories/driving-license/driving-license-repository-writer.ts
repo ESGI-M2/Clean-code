@@ -16,27 +16,31 @@ const STATUS_MAP_REVERSE: Record<'VALID' | 'EXPIRED' | 'SUSPENDED', number> = {
 
 export default class SequelizeDrivingLicenseRepositoryWriter implements DrivingLicenseRepositoryWriter {
   async add(drivingLicense: DrivingLicense): Promise<DrivingLicense> {
+    if (!['VALID', 'EXPIRED', 'SUSPENDED'].includes(drivingLicense.status)) {
+      throw new Error(`Invalid status value: ${drivingLicense.status}`);
+    }
+  
     const statusNumber = STATUS_MAP_REVERSE[drivingLicense.status];
     if (statusNumber === undefined) {
       throw new Error(`Invalid status value: ${drivingLicense.status}`);
     }
-
+  
     const drivingLicenseModel = await DrivingLicenseModel.create({
       emissionDate: drivingLicense.date,
       status: statusNumber,
       country: drivingLicense.country,
     });
-
+  
     const domainStatus = STATUS_MAP[drivingLicenseModel.status];
     if (!domainStatus) {
       throw new Error(`Invalid status number from database: ${drivingLicenseModel.status}`);
     }
-
+  
     return new DrivingLicense(
       drivingLicenseModel.id,
       drivingLicenseModel.emissionDate,
       domainStatus,
       drivingLicenseModel.country
     );
-  }
+  }  
 }

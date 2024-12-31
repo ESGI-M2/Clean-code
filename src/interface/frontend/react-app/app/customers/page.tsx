@@ -14,7 +14,6 @@ const CustomersPage = () => {
       try {
         const data = await getCustomers();
         setCustomers(data);
-        
         await loadCustomerEventsCount(data);
       } catch (error) {
         console.error('Erreur lors du chargement des clients', error);
@@ -36,6 +35,14 @@ const CustomersPage = () => {
 
   const goToCustomerEventDetails = (customerId: number) => {
     router.push(`/customers/events?id=${customerId}`);
+  };
+
+  const handleAddDrivingLicense = (customerId: number) => {
+    router.push(`/customers/driving/add?id=${customerId}`);
+  };
+
+  const handleEditDrivingLicense = (customerId: number) => {
+    router.push(`/customers/driving/edit?id=${customerId}`);
   };
 
   return (
@@ -64,23 +71,46 @@ const CustomersPage = () => {
                   <td className="border-t px-6 py-3 text-sm text-gray-700">{customer.lastName}</td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">{customer.email}</td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">{customer.address}</td>
-                  <td className="border-t px-6 py-3 text-sm text-gray-700"
-                    title={
-                      customer.drivingLicense && customer.drivingLicense.date
-                        ? 'émission en ' + new Date(customer.drivingLicense.date).toLocaleDateString('fr-FR', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                          })
-                        : ''
-                    }
-                  >
-                    {customer.drivingLicense
-                      ? `${customer.drivingLicense.status} (${customer.drivingLicense.country})`
-                      : 'Aucun'}
+                  <td className="border-t px-6 py-3 text-sm text-gray-700 flex items-center gap-2">
+                    {customer.drivingLicense ? (
+                      <>
+                        <span
+                          title={
+                            customer.drivingLicense.date
+                              ? 'émission en ' +
+                                new Date(customer.drivingLicense.date).toLocaleDateString('fr-FR', {
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  year: 'numeric',
+                                })
+                              : ''
+                          }
+                        >
+                          {`${customer.drivingLicense.status} (${customer.drivingLicense.country})`}
+                        </span>
+                        <svg
+                          onClick={() => handleEditDrivingLicense(customer.id)}
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-blue-600 cursor-pointer hover:text-blue-800"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path d="M17.414 2.586a2 2 0 010 2.828l-10 10A2 2 0 016 16H4a1 1 0 01-1-1v-2a2 2 0 01.586-1.414l10-10a2 2 0 012.828 0zM12 5l3 3m-9 7h3m4-14h6m-3 0v6m-7.5 7.5H4a1 1 0 01-1-1v-2a2 2 0 01.586-1.414l10-10a2 2 0 012.828 0l2.586 2.586a2 2 0 010 2.828l-10 10A2 2 0 016 16H4a1 1 0 01-1-1v-2a2 2 0 01.586-1.414l10-10A2 2 0 0113.5 2l.5.5" />
+                        </svg>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => handleAddDrivingLicense(customer.id)}
+                        className="bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-700"
+                      >
+                        Ajouter
+                      </button>
+                    )}
                   </td>
-                  <td className="border-t px-6 py-3 text-sm text-blue-600 cursor-pointer hover:underline"
-                    onClick={() => goToCustomerEventDetails(customer.id)}>
+                  <td
+                    className="border-t px-6 py-3 text-sm text-blue-600 cursor-pointer hover:underline"
+                    onClick={() => goToCustomerEventDetails(customer.id)}
+                  >
                     Voir les événements ({eventsCountMap[customer.id] ?? 0})
                   </td>
                 </tr>
