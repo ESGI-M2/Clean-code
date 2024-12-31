@@ -16,10 +16,14 @@ export default class SequelizeCustomerRepositoryReader implements CustomerReposi
       ],
     });
 
+   ;
+
     return customers.map(customer =>
       new Customer(
         customer.id,
-        toDomainDrivingLicense(customer.drivingLicense),
+        customer.drivingLicense
+        ? toDomainDrivingLicense(customer.drivingLicense)
+        : null,
         customer.occupation,
         customer.lastName,
         customer.firstName,
