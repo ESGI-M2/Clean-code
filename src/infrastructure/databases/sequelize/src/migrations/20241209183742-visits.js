@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.DECIMAL,
       },
       recapitulation: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
     });
   },

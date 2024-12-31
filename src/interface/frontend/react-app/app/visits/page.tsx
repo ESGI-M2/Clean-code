@@ -43,7 +43,6 @@ const VisitesPage = () => {
         </button>
       </div>
 
-      {/* Liste des visites */}
       <div className="overflow-x-auto mb-8">
         <h2 className="text-2xl font-semibold mb-4">Liste des Visites</h2>
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
@@ -51,8 +50,8 @@ const VisitesPage = () => {
             <tr className="bg-gray-100">
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Nom du Client</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Modèle de Moto</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Prix de la Visite</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Date de la Visite</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Prix</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Détails</th>
             </tr>
           </thead>
@@ -73,7 +72,7 @@ const VisitesPage = () => {
                     {formatDate(visite.visitDate)}
                   </td>
                   <td className="border-t px-6 py-3 text-sm text-gray-700">
-                    {visite.details ?? 'Détails non disponibles'}
+                    {visite.recapitulation ?? 'Aucun commentaire'}
                   </td>
                 </tr>
               ))

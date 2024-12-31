@@ -156,6 +156,28 @@ export const getVisites = async () => {
   }
 };
 
+export const createVisit = async (
+  customerId: number,
+  bikeModelId: number,
+  price: number,
+  recapitulation: string,
+  visitDate: string
+) => {
+  try {
+    const response = await axios.post(API_VISITS_URL, {
+      customerId,
+      bikeModelId,
+      price,
+      recapitulation,
+      visitDate,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la création de la visite', error);
+    throw error;
+  }
+};
+
 export const createDrivingLicense = async (
   customerId: string,
   date: string,

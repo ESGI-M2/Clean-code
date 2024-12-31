@@ -6,6 +6,6 @@ export class Visit {
     public bike: Bike,
     public visitDate: Date,
     public price: number,
-    public recapitulation: number,
+    public recapitulation: string,
   ) {}
 }

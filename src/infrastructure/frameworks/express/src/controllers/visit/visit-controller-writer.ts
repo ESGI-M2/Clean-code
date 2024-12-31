@@ -11,7 +11,7 @@ export default class VisitControllerWriter {
   ) {}
 
   async create(req: Request, res: Response): Promise<Response> {
-    const { bikeId, visitDate, price, recapitulation } = req.body;
+    const { bikeModelId, visitDate, price, recapitulation } = req.body;
 
     const createVisitCommandHandler = new CreateVisitCommandHandler(
       this.VisitRepositoryWriter,
@@ -20,7 +20,7 @@ export default class VisitControllerWriter {
 
     try {
       const visit = await createVisitCommandHandler.execute(new CreateVisitCommand(
-        bikeId,
+        bikeModelId,
         visitDate,
         price,
         recapitulation

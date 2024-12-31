@@ -28,5 +28,5 @@ export default class Visit extends Model {
   declare price: number;
 
   @Column
-  declare recapitulation: number;
+  declare recapitulation: string;
 }

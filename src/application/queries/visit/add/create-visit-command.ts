@@ -3,6 +3,6 @@ export default class CreateVisitCommand {
     public bikeId: number,
     public visitDate: Date,
     public price: number,
-    public recapitulation: number,
+    public recapitulation: string,
   ) {}
 }
