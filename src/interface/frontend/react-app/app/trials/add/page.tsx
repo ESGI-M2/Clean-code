@@ -28,13 +28,11 @@ const AddTrialPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation des champs
     if (!selectedBikeModel || !startDateTime || !endDateTime || !kilometers) {
       alert("Tous les champs sont nécessaires !");
       return;
     }
 
-    // Crée un objet avec les informations de l'essai
     const newTrial = {
       bikeId: selectedBikeModel,
       startDate: startDateTime,
@@ -44,7 +42,7 @@ const AddTrialPage = () => {
 
     try {
       await createTrial(newTrial);
-      router.push('/trials');  // Redirige vers la liste des essais
+      router.push('/trials');
     } catch (error) {
       console.error('Erreur lors de la création de l\'essai', error);
       alert('Erreur lors de l\'ajout de l\'essai');

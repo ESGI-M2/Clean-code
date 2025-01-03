@@ -29,17 +29,14 @@ const AddDrivingLicensePage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Vérification des champs
     if (!emissionDate || !status || !country) {
       alert('Tous les champs sont obligatoires!');
       return;
     }
 
-    // Debugging: Vérifier ce que vous envoyez
     console.log(`Status: ${status}, Country: ${country}, Date: ${emissionDate}`);
 
     try {
-      // L'appel API
       await createDrivingLicense(customerId!, emissionDate, status, country);
       alert('Permis de conduire ajouté avec succès!');
       router.push(`/customers`);

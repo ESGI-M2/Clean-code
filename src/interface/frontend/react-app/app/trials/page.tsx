@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { getTrial } from '../../api';
 import { useRouter } from 'next/navigation';
-import { format } from 'date-fns'; // Importer la fonction format de date-fns
+import { format } from 'date-fns';
 
-// Fonction pour formater la date et l'heure
 const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);
-  return format(date, 'dd/MM/yyyy HH:mm'); // Format : jour/mois/année heure:minute
+  return format(date, 'dd/MM/yyyy HH:mm');
 };
 
 const EssaisPage = () => {
